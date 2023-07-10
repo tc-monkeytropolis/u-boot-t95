@@ -38,7 +38,7 @@ int axp_set_dcdc1(unsigned int mvolt)
 	else
 		cfg = axp313a_mvolt_to_cfg(mvolt, 500, 1200, 10);
 
-	if (mvolt = 0)
+	if (mvolt == 0)
 		return pmic_bus_clrbits(AXP313A_OUTPUT_SWITCH, AXP313A_DCDC1_EN);
 
 	ret = pmic_bus_write(AXP313A_DCDC1_VOLTAGE, cfg);
@@ -62,7 +62,7 @@ int axp_set_dcdc2(unsigned int mvolt)
 	else
 		cfg = axp313a_mvolt_to_cfg(mvolt, 500, 1200, 10);
 
-	if (mvolt = 0)
+	if (mvolt == 0)
 		return pmic_bus_clrbits(AXP313A_OUTPUT_SWITCH, AXP313A_DCDC2_EN);
 
 	ret = pmic_bus_write(AXP313A_OUTPUT_SWITCH, AXP313A_DCDC2_EN);
@@ -86,7 +86,7 @@ int axp_set_dcdc3(unsigned int mvolt)
         else
                 cfg = axp313a_mvolt_to_cfg(mvolt, 800, 1120, 10);
 
-        if (mvolt = 0)
+        if (mvolt == 0)
                 return pmic_bus_clrbits(AXP313A_OUTPUT_SWITCH, AXP313A_DCDC3_EN);
 
         ret = pmic_bus_write(AXP313A_OUTPUT_SWITCH, AXP313A_DCDC3_EN);
@@ -127,14 +127,14 @@ int axp_set_dldo(int dldo_num, unsigned int mvolt)
 		return -EINVAL;
 
 	if (mvolt == 0)
-		return pmic_bus_clrbits(AXP313A_OUTPUT_SWITCH, AXP313A_DLDO_EN);
+		return pmic_bus_clrbits(AXP313A_OUTPUT_SWITCH, AXP313A_DLDO1_EN);
 
 	cfg = axp313a_mvolt_to_cfg(mvolt, 500, 3500, 100);
-	ret = pmic_bus_write(AXP313A_DLDO_VOLTAGE, cfg);
+	ret = pmic_bus_write(AXP313A_DLDO1_VOLTAGE, cfg);
 	if (ret)
 		return ret;
 
-	return pmic_bus_setbits(AXP313A_OUTPUT_SWITCH, AXP313A_DLDO_EN);
+	return pmic_bus_setbits(AXP313A_OUTPUT_SWITCH, AXP313A_DLDO1_EN);
 }
 
 int axp_init(void)
