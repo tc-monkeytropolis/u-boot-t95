@@ -587,7 +587,8 @@ void sunxi_board_init(void)
 
 #if defined CONFIG_AXP152_POWER || defined CONFIG_AXP209_POWER || \
 	defined CONFIG_AXP221_POWER || defined CONFIG_AXP305_POWER || \
-	defined CONFIG_AXP809_POWER || defined CONFIG_AXP818_POWER
+	defined CONFIG_AXP809_POWER || defined CONFIG_AXP818_POWER || \
+	defined CONFIG_AXP313A_POWER
 	power_failed = axp_init();
 
 	if (IS_ENABLED(CONFIG_AXP_DISABLE_BOOT_ON_POWERON) && !power_failed) {
@@ -601,14 +602,14 @@ void sunxi_board_init(void)
 	}
 
 #if defined CONFIG_AXP221_POWER || defined CONFIG_AXP809_POWER || \
-	defined CONFIG_AXP818_POWER
+	defined CONFIG_AXP818_POWER || defined CONFIG_AXP313A_POWER
 	power_failed |= axp_set_dcdc1(CONFIG_AXP_DCDC1_VOLT);
 #endif
 #if !defined(CONFIG_AXP305_POWER)
 	power_failed |= axp_set_dcdc2(CONFIG_AXP_DCDC2_VOLT);
 	power_failed |= axp_set_dcdc3(CONFIG_AXP_DCDC3_VOLT);
 #endif
-#if !defined(CONFIG_AXP209_POWER) && !defined(CONFIG_AXP818_POWER)
+#if !defined(CONFIG_AXP209_POWER) && !defined(CONFIG_AXP818_POWER) && !defined(CONFIG_AXP313A_POWER)
 	power_failed |= axp_set_dcdc4(CONFIG_AXP_DCDC4_VOLT);
 #endif
 #if defined CONFIG_AXP221_POWER || defined CONFIG_AXP809_POWER || \
@@ -617,13 +618,13 @@ void sunxi_board_init(void)
 #endif
 
 #if defined CONFIG_AXP221_POWER || defined CONFIG_AXP809_POWER || \
-	defined CONFIG_AXP818_POWER
+	defined CONFIG_AXP818_POWER || defined CONFIG_AXP313A_POWER
 	power_failed |= axp_set_aldo1(CONFIG_AXP_ALDO1_VOLT);
 #endif
-#if !defined(CONFIG_AXP305_POWER)
+#if !defined(CONFIG_AXP305_POWER) && !defined(CONFIG_AXP313A_POWER)
 	power_failed |= axp_set_aldo2(CONFIG_AXP_ALDO2_VOLT);
 #endif
-#if !defined(CONFIG_AXP152_POWER) && !defined(CONFIG_AXP305_POWER)
+#if !defined(CONFIG_AXP152_POWER) && !defined(CONFIG_AXP305_POWER) && !defined(CONFIG_AXP313A_POWER)
 	power_failed |= axp_set_aldo3(CONFIG_AXP_ALDO3_VOLT);
 #endif
 #ifdef CONFIG_AXP209_POWER
@@ -631,16 +632,20 @@ void sunxi_board_init(void)
 #endif
 
 #if defined(CONFIG_AXP221_POWER) || defined(CONFIG_AXP809_POWER) || \
-	defined(CONFIG_AXP818_POWER)
+	defined(CONFIG_AXP818_POWER) || defined(CONFIG_AXP313A_POWER)
 	power_failed |= axp_set_dldo(1, CONFIG_AXP_DLDO1_VOLT);
+#if !defined(CONFIG_AXP313A_POWER)
 	power_failed |= axp_set_dldo(2, CONFIG_AXP_DLDO2_VOLT);
-#if !defined CONFIG_AXP809_POWER
+#endif
+#if !defined CONFIG_AXP809_POWER && !defined CONFIG_AXP313A_POWER
 	power_failed |= axp_set_dldo(3, CONFIG_AXP_DLDO3_VOLT);
 	power_failed |= axp_set_dldo(4, CONFIG_AXP_DLDO4_VOLT);
 #endif
+#if !defined CONFIG_AXP313A_POWER
 	power_failed |= axp_set_eldo(1, CONFIG_AXP_ELDO1_VOLT);
 	power_failed |= axp_set_eldo(2, CONFIG_AXP_ELDO2_VOLT);
 	power_failed |= axp_set_eldo(3, CONFIG_AXP_ELDO3_VOLT);
+#endif
 #endif
 
 #ifdef CONFIG_AXP818_POWER
