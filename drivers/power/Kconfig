@@ -101,6 +101,15 @@ config AXP305_POWER
 	Select this to enable support for the axp305 pmic found on most
 	H616 boards.
 
+config AXP313A_POWER
+	bool "axp313a pmic support"
+	depends on MACH_SUN50I_H616
+	select AXP_PMIC_BUS
+	select CMD_POWEROFF
+	---help---
+	Select this to enable support for the axp313a pmic found on other
+	H616 boards.
+
 config AXP809_POWER
 	bool "axp809 pmic support"
 	depends on MACH_SUN9I
