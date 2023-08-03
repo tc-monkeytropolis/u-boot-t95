@@ -74,9 +74,10 @@ int axp_set_dcdc2(unsigned int mvolt)
 
 int axp_set_dcdc3(unsigned int mvolt)
 {
+	//The DCDC3 algo specified in the datasheet is WRONG. The actual tested ranges are:
 	//DCDC3 voltage select algo - 6bit
-	//0.8-1.12V, 10mV/step, 33 steps
-	//1.14-1.84V, 20mV/step, 36 steps
+        //0.5-1.2V, 10mv/step, 71 steps
+        //1.22-1.84V, 20mV/step, 31 steps
 
 	int ret;
         u8 cfg;
