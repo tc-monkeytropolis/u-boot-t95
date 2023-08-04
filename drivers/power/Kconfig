@@ -101,6 +101,15 @@ config AXP305_POWER
 	Select this to enable support for the axp305 pmic found on most
 	H616 boards.
 
+config AXP313_POWER
+	bool "axp313 pmic support"
+	depends on MACH_SUN50I_H616
+	select AXP_PMIC_BUS
+	select CMD_POWEROFF
+	---help---
+	Select this to enable support for the AXP313/AXP1530 pmic found on
+	some H616 boards.
+
 config AXP809_POWER
 	bool "axp809 pmic support"
 	depends on MACH_SUN9I
@@ -129,9 +138,10 @@ endchoice
 
 config AXP_DCDC1_VOLT
 	int "axp pmic dcdc1 voltage"
-	depends on AXP221_POWER || AXP809_POWER || AXP818_POWER
+	depends on AXP221_POWER || AXP313_POWER || AXP809_POWER || AXP818_POWER
 	default 3300 if AXP818_POWER || MACH_SUN8I_R40
 	default 3000 if MACH_SUN6I || MACH_SUN8I || MACH_SUN9I
+	default 960 if AXP313_POWER
 	---help---
 	Set the voltage (mV) to program the axp pmic dcdc1 at, set to 0 to
 	disable dcdc1. On A23 / A31 / A33 (axp221) boards dcdc1 is used for
@@ -139,15 +149,17 @@ config AXP_DCDC1_VOLT
 	sdcard interfaces, etc. On most boards dcdc1 is undervolted to 3.0V to
 	save battery. On A31 devices dcdc1 is also used for VCC-IO. On A83T
 	dcdc1 is used for VCC-IO, nand, usb0, sd , etc. On A80 dcdc1 normally
-	powers some of the pingroups, NAND/eMMC, SD/MMC, and USB OTG.
+	powers some of the pingroups, NAND/eMMC, SD/MMC, and USB OTG. On H616 
+	with AXP313 this is usually CPU core voltage.
 
 config AXP_DCDC2_VOLT
 	int "axp pmic dcdc2 voltage"
-	depends on AXP152_POWER || AXP209_POWER || AXP221_POWER || AXP809_POWER || AXP818_POWER
+	depends on AXP152_POWER || AXP209_POWER || AXP221_POWER || AXP313_POWER || AXP809_POWER || AXP818_POWER
 	default 900 if AXP818_POWER
 	default 1400 if AXP152_POWER || AXP209_POWER
 	default 1200 if MACH_SUN6I
 	default 1100 if MACH_SUN8I
+	default 1120 if AXP313_POWER
 	default 0 if MACH_SUN9I
 	---help---
 	Set the voltage (mV) to program the axp pmic dcdc2 at, set to 0 to
@@ -158,15 +170,17 @@ config AXP_DCDC2_VOLT
 	On A80 boards dcdc2 powers the GPU and can be left off.
 	On A83T boards dcdc2 is used for VDD-CPUA(cluster 0) and should be 0.9V.
 	On R40 boards dcdc2 is VDD-CPU and should be 1.1V
+	On H616/AXP313 boards this is GPU power can be left off.
 
 config AXP_DCDC3_VOLT
 	int "axp pmic dcdc3 voltage"
-	depends on AXP152_POWER || AXP209_POWER || AXP221_POWER || AXP809_POWER || AXP818_POWER
+	depends on AXP152_POWER || AXP209_POWER || AXP221_POWER || AXP313_POWER || AXP809_POWER || AXP818_POWER
 	default 900 if AXP809_POWER || AXP818_POWER
 	default 1500 if AXP152_POWER
 	default 1250 if AXP209_POWER
 	default 1100 if MACH_SUN8I_R40
 	default 1200 if MACH_SUN6I || MACH_SUN8I
+	default 1420 if AXP313_POWER
 	---help---
 	Set the voltage (mV) to program the axp pmic dcdc3 at, set to 0 to
 	disable dcdc3.
@@ -177,6 +191,7 @@ config AXP_DCDC3_VOLT
 	On A80 boards dcdc3 is used for VDD-CPUA(cluster 0) and should be 0.9V.
 	On A83T boards dcdc3 is used for VDD-CPUB(cluster 1) and should be 0.9V.
 	On R40 boards dcdc3 is VDD-SYS and VDD-GPU and should be 1.1V.
+	On H616/AXP313 boards this is DRAM power and should be set according to DRAM requirements.
 
 config AXP_DCDC4_VOLT
 	int "axp pmic dcdc4 voltage"
@@ -208,9 +223,9 @@ config AXP_DCDC5_VOLT
 
 config AXP_ALDO1_VOLT
 	int "axp pmic (a)ldo1 voltage"
-	depends on AXP221_POWER || AXP809_POWER || AXP818_POWER
+	depends on AXP221_POWER || AXP313_POWER || AXP809_POWER || AXP818_POWER
 	default 0 if MACH_SUN6I || MACH_SUN8I_R40
-	default 1800 if MACH_SUN8I_A83T
+	default 1800 if MACH_SUN8I_A83T || AXP313_POWER
 	default 3000 if MACH_SUN8I || MACH_SUN9I
 	---help---
 	Set the voltage (mV) to program the axp pmic aldo1 at, set to 0 to
@@ -220,6 +235,7 @@ config AXP_ALDO1_VOLT
 	On A80 boards aldo1 powers the USB hosts and should be 3.0V.
 	On A83T / H8 boards aldo1 is used for MIPI CSI, DSI, HDMI, EFUSE, and
 	should be 1.8V.
+	On H616/AXP313 this is IO ref voltage and should be 1.8V
 
 config AXP_ALDO2_VOLT
 	int "axp pmic (a)ldo2 voltage"
@@ -307,8 +323,9 @@ config AXP_ALDO4_VOLT
 
 config AXP_DLDO1_VOLT
 	int "axp pmic dldo1 voltage"
-	depends on AXP221_POWER || AXP809_POWER || AXP818_POWER
+	depends on AXP221_POWER || AXP313_POWER || AXP809_POWER || AXP818_POWER
 	default 0
+	default 3300 if AXP313_POWER
 	---help---
 	Set the voltage (mV) to program the axp pmic dldo1 at, set to 0 to
 	disable dldo1. On sun6i (A31) boards with ethernet dldo1 is often used
