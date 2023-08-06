@@ -107,6 +107,17 @@ void i2c_init_board(void)
 #endif
 #endif
 
+#ifdef CONFIG_I2C3_ENABLE
+#if defined(CONFIG_MACH_SUN50I_H616)
+	sunxi_gpio_set_cfgpin(SUNXI_GPA(10), 2);
+	sunxi_gpio_set_cfgpin(SUNXI_GPA(11), 2);
+	sunxi_gpio_set_cfgpin(SUNXI_GPA(12), 2);
+	sunxi_gpio_set_pull(SUNXI_GPA(10), SUNXI_GPIO_PULL_UP);
+	sunxi_gpio_set_pull(SUNXI_GPA(11), SUNXI_GPIO_PULL_UP);
+	clock_twi_onoff(3, 1);
+#endif
+#endif
+
 #ifdef CONFIG_R_I2C_ENABLE
 #ifdef CONFIG_MACH_SUN50I
 	clock_twi_onoff(5, 1);
@@ -670,6 +681,7 @@ void sunxi_board_init(void)
 		clock_set_pll1(get_board_sys_clk());
 	else
 		printf("Failed to set core voltage! Can't set CPU frequency\n");
+
 }
 #endif /* CONFIG_SPL_BUILD */
 
