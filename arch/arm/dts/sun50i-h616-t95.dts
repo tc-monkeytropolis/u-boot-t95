@@ -79,7 +79,7 @@
 	vmmc-supply = <&reg_dldo1>;
 	vqmmc-supply = <&reg_aldo1>;
 	status = "okay";
-}
+};
 
 &mmc2 {
 	bus-width = <8>;
@@ -158,7 +158,7 @@
 	vcc-pg-supply = <&reg_aldo1>;
 	vcc-ph-supply = <&reg_dldo1>;
 	vcc-pi-supply = <&reg_dldo1>;
-}
+};
 
 &uart0 {
 	pinctrl-names = "default";
